@@ -24,12 +24,12 @@ public class WebsiteController {
 	private WebsiteService websiteService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Page<Website> getAllWebsites(@PageableDefault(page = 0, size = 9) Pageable pageable) {
-		return websiteService.getAllWebsites(pageable);
+	public Page<Website> getAllVisibleWebsites(@PageableDefault(page = 0, size = 9) Pageable pageable) {
+		return websiteService.findByVisibleTrue(pageable);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Optional<Website> getWebsiteById(@PathVariable("id") Long id) {
-		return websiteService.getWebsiteById(id);
+		return websiteService.findById(id);
 	}
 }

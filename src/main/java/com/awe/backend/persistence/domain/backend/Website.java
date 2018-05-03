@@ -22,7 +22,7 @@ public class Website implements Serializable {
 	private String url;
 	private String description;
 	private String prettyname;
-	private String isVisible;
+	private Boolean visible;
 
 	/** Default constructor*/
 	public Website() {
@@ -77,12 +77,12 @@ public class Website implements Serializable {
 		this.prettyname = prettyname;
 	}
 
-	public String getIsVisible() {
-		return isVisible;
+	public Boolean getVisible() {
+		return visible;
 	}
 
-	public void setIsVisible(String isVisible) {
-		this.isVisible = isVisible;
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
 	}
 
 	@Override

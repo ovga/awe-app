@@ -14,16 +14,28 @@ import com.awe.backend.persistence.repositories.WebsiteRepository;
 public class WebsiteService {
 
 	@Autowired
-	private WebsiteRepository websiteRepository;
+	private WebsiteRepository repository;
 
-	public Page<Website> getAllWebsites(Pageable pageable) {
-		/*List<Website> websiteList = (List<Website>) websiteRepository.findAll();*/
-		Page<Website> websiteList = websiteRepository.findAll(pageable);
+	public Page<Website> findAll(Pageable pageable) {
+		Page<Website> websiteList = repository.findAll(pageable);
 		return websiteList;
 	}
 	
-	public Optional<Website> getWebsiteById(Long id) {
-		Optional<Website> website = websiteRepository.findById(id);
+	public Optional<Website> findById(Long id) {
+		Optional<Website> website = repository.findById(id);
 		return website;
+	}
+
+	public long countByUrl(String url) {
+		return repository.countByUrl(url);
+	}
+
+	public Website create(Website item) {
+		Website entity = repository.save(item);
+		return entity;
+	}
+	
+	public Page<Website> findByVisibleTrue(Pageable pageable) {
+		return repository.findByVisibleTrue(pageable);
 	}
 }
