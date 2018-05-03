@@ -1,0 +1,54 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/batch
+	http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<context:annotation-config/>
+	<jpa:repositories base-package="com.awe.backend.persistence.repositories" />
+
+	<import resource="database.xml"/>
+	<import resource="context.xml"/>
+	<import resource="job_categories.xml"/>
+	<import resource="job_tags.xml"/>
+	<import resource="job_websites.xml"/>
+	
+	<batch:job id="importJob">
+		<batch:step id="step1" next="step2">
+			<batch:tasklet>
+				<batch:chunk reader="categoriesReader" 
+							 writer="categoriesWriter"
+							 commit-interval="10">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+		
+		<batch:step id="step2" next="step3">
+			<batch:tasklet>
+				<batch:chunk reader="tagsReader" 
+							 writer="tagsWriter"
+							 commit-interval="10">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+		
+		<batch:step id="step3">
+			<batch:tasklet>
+				<batch:chunk reader="websitesReader" 
+							 writer="websitesWriter"
+							 commit-interval="10">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+	</batch:job>
+</beans>
