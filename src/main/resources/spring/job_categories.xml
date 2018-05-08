@@ -7,6 +7,7 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
 	<bean id="category" class="com.awe.backend.persistence.domain.backend.Category" scope="prototype" />
+	<bean id="categoryService" class="com.awe.backend.service.CategoryService" scope="prototype" />
 
 	<bean id="categoriesReader" class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="resource" value="classpath:csv/categories.csv" />

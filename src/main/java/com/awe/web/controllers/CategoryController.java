@@ -2,11 +2,11 @@ package com.awe.web.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.awe.backend.persistence.domain.backend.Category;
+import com.awe.backend.persistence.domain.dto.CategoryDTO;
 import com.awe.backend.service.CategoryService;
 
+@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
@@ -32,14 +34,15 @@ public class CategoryController {
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public Category getCategoryById(@PathVariable("id") Long id) {
-		Optional<Category> category = categoryService.findCategoryById(id);
+		Category category = categoryService.findCategoryById(id);
 		
-		return category.isPresent() ? category.get() : null;
+		return category;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public Category create(@Valid @RequestBody Category categoryRequest) {
-		Category category = categoryService.create(categoryRequest);
-		return category;
+	public Category create(@Valid @RequestBody CategoryDTO categoryRequest) {
+		Category category = new Category();
+		category.setName(categoryRequest.getName());
+		return categoryService.create(category);
 	}
 }

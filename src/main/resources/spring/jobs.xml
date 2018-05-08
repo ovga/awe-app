@@ -44,7 +44,8 @@
 		
 		<batch:step id="step3">
 			<batch:tasklet>
-				<batch:chunk reader="websitesReader" 
+				<batch:chunk reader="websitesReader"
+							 processor="websitesProcessor" 
 							 writer="websitesWriter"
 							 commit-interval="10">
 				</batch:chunk>

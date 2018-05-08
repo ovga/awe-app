@@ -1,12 +1,23 @@
 package com.awe.backend.persistence.domain.backend;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.NaturalId;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity(name="websites")
 public class Website implements Serializable {
@@ -24,11 +35,32 @@ public class Website implements Serializable {
 	private String prettyname;
 	private Boolean visible;
 
+	@JsonBackReference
+	@ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+            })
+    @JoinTable(name = "web_cat",
+            joinColumns = { @JoinColumn(name = "web_id") },
+            inverseJoinColumns = { @JoinColumn(name = "cat_id") })
+    private Set<Category> categories = new HashSet<>();
+ 
 	/** Default constructor*/
 	public Website() {
 		
 	}
 	
+    public void addCategory(Category category) {
+    	categories.add(category);
+    	category.getWebsites().add(this);
+    }
+ 
+    public void removeCategory(Category category) {
+    	categories.remove(category);
+        category.getWebsites().remove(this);
+    }
+    
 	public Long getId() {
 		return id;
 	}
@@ -85,6 +117,14 @@ public class Website implements Serializable {
 		this.visible = visible;
 	}
 
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -114,6 +154,27 @@ public class Website implements Serializable {
 		} else if (!url.equals(other.url))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Website [id=");
+		builder.append(id);
+		builder.append(", title=");
+		builder.append(title);
+		builder.append(", image=");
+		builder.append(image);
+		builder.append(", url=");
+		builder.append(url);
+		builder.append(", description=");
+		builder.append(description);
+		builder.append(", prettyname=");
+		builder.append(prettyname);
+		builder.append(", visible=");
+		builder.append(visible);
+		builder.append("]");
+		return builder.toString();
 	}
 	
 }

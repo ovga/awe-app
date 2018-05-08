@@ -20,9 +20,9 @@ public class CategoryService {
 		return entityList; 
 	}
 	
-	public Optional<Category> findCategoryById(Long id) {
+	public Category findCategoryById(long id) {
 		Optional<Category> entity = repository.findById(id);
-		return entity;
+		return entity.isPresent() ? entity.get() : null;
 	}
 	
 	public Category create(Category category) {
@@ -32,5 +32,10 @@ public class CategoryService {
 	
 	public long count() {
 		return repository.count();
+	}
+
+	public Category findCategoryByName(String name) {
+		Optional<Category> entity = repository.findByName(name); 
+		return entity.isPresent() ? entity.get() : null;
 	}
 }

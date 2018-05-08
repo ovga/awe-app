@@ -1,2 +1,2 @@
-Title1, image1, http://www.gsp.ro, description of this website, gsp, TRUE
-Title2, image2, http://www.prosport.ro, description of this website 2, prosport, FALSE
+Title1, image1, http://www.gsp.ro, with category list, gsp, "Travel, Health", TRUE
+Title2, image2, http://www.prosport.ro, description of this website 2, prosport, "Food", FALSE

@@ -21,9 +21,9 @@ public class WebsiteService {
 		return websiteList;
 	}
 	
-	public Optional<Website> findById(Long id) {
+	public Website findById(Long id) {
 		Optional<Website> website = repository.findById(id);
-		return website;
+		return website.isPresent() ? website.get() : null;
 	}
 
 	public long countByUrl(String url) {
@@ -38,4 +38,5 @@ public class WebsiteService {
 	public Page<Website> findByVisibleTrue(Pageable pageable) {
 		return repository.findByVisibleTrue(pageable);
 	}
+	
 }

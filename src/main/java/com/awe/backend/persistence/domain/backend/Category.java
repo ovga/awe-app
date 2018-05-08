@@ -1,12 +1,19 @@
 package com.awe.backend.persistence.domain.backend;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity(name="categories")
 public class Category implements Serializable{
@@ -19,7 +26,16 @@ public class Category implements Serializable{
 	private Long id;
 	private String name;
 
-	/** Default constructor */
+	@JsonManagedReference
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+                }, 
+            mappedBy = "categories")
+    private Set<Website> websites = new HashSet<>();
+	
+    /** Default constructor */
 	public Category() {
 		
 	}
@@ -38,6 +54,14 @@ public class Category implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<Website> getWebsites() {
+		return websites;
+	}
+
+	public void setWebsites(Set<Website> websites) {
+		this.websites = websites;
 	}
 
 	@Override
